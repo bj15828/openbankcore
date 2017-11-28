@@ -3,10 +3,13 @@ package com.xbeer.notify;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
 
 import com.xbeer.notify.rabbit.RabbitMQConfig;
+import com.xbeer.util.ObjectUtil;
 import com.xbeer.util.StringUtil;
 
 /**
@@ -18,7 +21,7 @@ import com.xbeer.util.StringUtil;
 
 public class NotifyManager {
 
-  
+
   public static String NotifyType_RabbitMQ = "rabbitmq";
   public static String NotifyType_Kafka = "kafka";
   public static String NotifyType_RocketMQ = "rocketmq";
@@ -30,41 +33,45 @@ public class NotifyManager {
   List<INotifySender> senders;// 注入多个INotifySender，可能有RabbitMQ，也有可能是kafka
 
   String defaultNotify;
-  
-  
-  NotifyConfig config ;
-  
-  
+
+
+  NotifyConfig config;
+
+
   static INotifySender defaultSender;
 
-  public NotifyManager(){
-    
+  public NotifyManager() {
+
     this.senders = new ArrayList();
   }
 
 
-  public NotifyManager(Map<String ,Object > args) {
-      if(args == null )return;
-      
-      String defaultConfig = (String) args.get("default");
-      defaultNotify = defaultConfig;
-      if(StringUtil.equals(defaultConfig, NotifyType_RabbitMQ)){
-          
-        RabbitMQConfig rabbitConfig = new RabbitMQConfig((String)args.get("queues"),(String)args.get("topics"));
-        Map<String,String > binding = (Map<String, String>) args.get("binding");
-        rabbitConfig.setBinding(binding);
-        
-        config = rabbitConfig;
-        config.init();
-        
-      }
+  public NotifyManager(Map<String, Object> args) {
+    if (args == null) {
+      return;
+    }
+
+    String defaultConfig = (String) args.get("default");
+    defaultNotify = defaultConfig;
+    if (StringUtil.equals(defaultConfig, NotifyType_RabbitMQ)) {
+
+      RabbitMQConfig rabbitConfig =
+          new RabbitMQConfig((String) args.get("queues"), (String) args.get("topics"));
+      Map<String, String> binding = (Map<String, String>) args.get("binding");
+      rabbitConfig.setBinding(binding);
+
+      config = rabbitConfig;
+      config.init();
+
+    }
   }
 
   private INotifySender get(String type) {
 
     for (INotifySender sender : this.senders) {
-      if (sender.isSelf(type))
+      if (sender.isSelf(type)) {
         return sender;
+      }
     }
     return null;
   }
@@ -78,24 +85,48 @@ public class NotifyManager {
 
 
     this.config = defaultConfig;
-    
+
   }
 
-  public static boolean send(String topic, String content) {
-    if(null == defaultSender )return false;
-    defaultSender.send(topic, content);
+  public static boolean setCallback(Consumer<?> cb) {
+
+   /* if (ObjectUtil.isNull(defaultSender)) {
+      return false;
+    }
+*/
+     defaultSender.setCallback(cb);
+
+    return true;
+  }
+
+  public static boolean send(String topic, String content, long msgId) {
+    if (null == defaultSender) {
+      return false;
+    }
+    defaultSender.send(topic, content, msgId);
     return true;
   }
 
   public void registerReceiver(INotifyReceiver receiver) {
-      
-      config.registerReceiver(receiver);
+
+    config.registerReceiver(receiver);
   }
 
-  public void registerSender(INotifySender sender ,boolean isDefault) {
-     if(isDefault ) this.defaultSender = sender;
+  public void registerSender(INotifySender sender, boolean isDefault) {
+    if (isDefault) {
+      this.defaultSender = sender;
+    }
     senders.add(sender);
-      
+
   }
 
+
+  public static void setCallback1(Predicate<?> cb) {
+    // TODO Auto-generated method stub
+    
+  }
+
+
+
+ 
 }

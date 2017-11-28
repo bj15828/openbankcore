@@ -10,12 +10,12 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({  "classpath:spring.xml" })
 @SpringBootApplication(scanBasePackages = "com")
 @MapperScan("com.demo.dao")
-public class Main {
+public class AccountMain {
   
   
   public static void main(String [] args){
     
-    SpringApplication.run(Main.class, args);
+    SpringApplication.run(AccountMain.class, args);
     
   }
 }

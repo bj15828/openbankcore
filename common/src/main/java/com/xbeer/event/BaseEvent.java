@@ -5,6 +5,7 @@ import java.util.Date;
 import com.rabbitmq.client.Command;
 import com.xbeer.constants.EventConstants.EventType;
 import com.xbeer.net.BaseRequestCommand;
+import com.xbeer.util.JsonUtil;
 
 public class BaseEvent {
    
@@ -24,10 +25,11 @@ public class BaseEvent {
     
     private String urlContext;//RestFul的url patch
     
-    private BaseRequestCommand orgCmd;//原始command
+    private String orgCmd;//原始command
     
     private String body;//json 格式
     
+    public BaseEvent(){}
     
     public BaseEvent(long eventId,String topic,EventType type){
       this.topic = topic;
@@ -64,14 +66,18 @@ public class BaseEvent {
 
 
 
-    public BaseRequestCommand getOrgCmd() {
+    public String getOrgCmd() {
       return orgCmd;
     }
 
 
 
-    public void setOrgCmd(BaseRequestCommand orgCmd) {
+    public void setOrgCmd(String orgCmd) {
       this.orgCmd = orgCmd;
+    }
+    
+    public void setOrgCmd(BaseRequestCommand orgCmd) {
+      this.orgCmd = JsonUtil.object2Json(orgCmd);
     }
 
 

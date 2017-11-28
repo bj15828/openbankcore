@@ -19,12 +19,12 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({  "classpath:spring.xml" })
 
 
-public class Main 
+public class InterestingMain 
 {
     public static void main( String[] args )
     {
 
-      SpringApplication.run(Main.class, args);
+      SpringApplication.run(InterestingMain.class, args);
     }
     
     @Bean  

@@ -1,8 +1,12 @@
 package com.xbeer.notify.rabbit;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xbeer.notify.INotifySender;
@@ -11,45 +15,80 @@ import com.xbeer.util.StringUtil;
 
 
 
-public class RabbitMQSender implements INotifySender {
-  
-  private final  Logger logger = LoggerFactory.getLogger(RabbitMQSender.class);
+public class RabbitMQSender implements INotifySender, RabbitTemplate.ConfirmCallback {
 
-  
- 
-  
-  
-  
+  private final Logger logger = LoggerFactory.getLogger(RabbitMQSender.class);
+
+
+
   @Autowired
   private final RabbitTemplate rabbitTemplate = null;
-  
+
   @Autowired
-  NotifyManager notifyManager ;
-  
- 
-  public RabbitMQSender(String notifyType){
-    
-    
+  NotifyManager notifyManager;
+
+  Consumer cb;
+
+
+  public RabbitMQSender(String notifyType) {
+
+
+
   }
-  
+
+
+
   @Override
-  public boolean send(String topic, String content) {
-    logger.info("topic :[{}],content:[{}]",topic,content);
-    rabbitTemplate.convertAndSend(RabbitMQConfig.ExchangeName, topic, content);
+  public boolean send(String topic, String content, long id) {
+
+    logger.info("topic :[{}],content:[{}]", topic, content);
+    CorrelationData correlationId = new CorrelationData(id + "");
+    rabbitTemplate.convertAndSend(RabbitMQConfig.ExchangeName, topic, content, correlationId);
+
+
+
     return true;
+
+
+
   }
 
   @Override
   public boolean isSelf(String type) {
-   
-    return StringUtil.equals(NotifyManager.NotifyType_RabbitMQ,type);
-  }
-  
-  public void init(){
-    notifyManager.registerSender(this,true);
-    
+
+    return StringUtil.equals(NotifyManager.NotifyType_RabbitMQ, type);
   }
 
-  
-  
+  public void init() {
+    notifyManager.registerSender(this, true);
+
+  }
+
+  @Override
+  public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+    
+    logger.info("rabbit call back {}",correlationData);
+    if (ack) {
+      if (null != cb) {
+        cb.accept(correlationData);
+      }
+    } else
+      logger.error("{}", cause);
+
+  }
+
+
+
+  @Override
+  public void setCallback(Consumer cb) {
+    this.cb = cb;
+    rabbitTemplate.setConfirmCallback(this);
+
+   
+
+
+  }
+
+
+
 }

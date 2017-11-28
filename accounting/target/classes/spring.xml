@@ -16,13 +16,16 @@
     <import resource="classpath*:spring-transaction.xml"/>
     <import resource="classpath*:spring-notify.xml"/>
     
-    	<bean id="notifyRabbitMQSender" class="com.xbeer.notify.rabbit.RabbitMQSender"  init-method="init">
+    <bean id="notifyRabbitMQSender" class="com.xbeer.notify.rabbit.RabbitMQSender"  init-method="init">
 		
 
 		<constructor-arg type="java.lang.String" value="rabbitmq" />
 
 
 	</bean>
+	<!-- 对notifyManager初始化 -->
+	<bean id="init" class="com.xbeer.config.AccountConfig"  init-method="init"/>
+		
 	
 	
 

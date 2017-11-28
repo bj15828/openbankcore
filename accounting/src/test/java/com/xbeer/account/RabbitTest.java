@@ -14,10 +14,10 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication(scanBasePackages = "com")
 @ImportResource({  "classpath:spring.xml" })
 
-@MapperScan("com.xbeer")
+@MapperScan("com.xbeer.repository")
 @EnableDiscoveryClient
 @EnableEurekaClient
-@EnableFeignClients("com.xbeer.model.feign")
+@EnableFeignClients("com.xbeer.api")
 
 public class RabbitTest {
 

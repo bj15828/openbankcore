@@ -13,7 +13,15 @@
 			<groupId>com.xbeer</groupId>
 			<artifactId>common</artifactId>
 			<version>${project.version}</version>
+		
 		</dependency>
+		
+		 <dependency>
+			<groupId>com.xbeer</groupId>
+			<artifactId>common-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
 	
        <dependency>
 			<groupId>org.springframework.cloud</groupId>

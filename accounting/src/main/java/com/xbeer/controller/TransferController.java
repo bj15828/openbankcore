@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.xbeer.api.ILimitCenterService;
+import com.xbeer.api.dto.LimitQueryCommand;
+import com.xbeer.api.dto.TransferCommand;
+import com.xbeer.api.dto.TransferReturnBody;
 import com.xbeer.controller.validate.ControllerValidator;
 import com.xbeer.controller.validate.ValidateResult;
 import com.xbeer.exception.BaseException;
 import com.xbeer.message.Message;
-import com.xbeer.model.feign.ILimitService;
 import com.xbeer.net.CommandResponse;
-import com.xbeer.net.command.LimitQueryCommand;
-import com.xbeer.net.command.TransferCommand;
-import com.xbeer.net.command.TransferReturnBody;
 import com.xbeer.service.TransferService;
 import com.xbeer.util.DoubleUtil;
 
@@ -28,14 +28,14 @@ import com.xbeer.util.DoubleUtil;
 
 public class TransferController extends BaseController {
 
-  private final static Logger logger = LoggerFactory.getLogger(TransferController.class);
+  private final  Logger logger = LoggerFactory.getLogger(TransferController.class);
 
   @Autowired
   TransferService transferService;
 
   
   @Autowired
-  ILimitService limitService;
+  ILimitCenterService limitService;
 
   @ResponseBody
   @RequestMapping(value = "/transfer", method = RequestMethod.POST)
@@ -55,9 +55,12 @@ public class TransferController extends BaseController {
     queryCmd.setHeader(transferCmd.getHeader());
     
     
-    
-   limitService.transfer(new Gson().toJson(queryCmd));
-    
+   try{
+   limitService.limitQuery(queryCmd);
+   }catch(Exception e){
+     
+     e.printStackTrace();
+   }
     
     
     
@@ -89,7 +92,7 @@ public class TransferController extends BaseController {
     try{
       result = transferService.transfer(acct_from, acct_to, amount, transferCmd);
     }catch(Exception e){
-      e.printStackTrace();
+      
       logger.error(e.getMessage());
       throw new BaseException(e,transferCmd);
     }

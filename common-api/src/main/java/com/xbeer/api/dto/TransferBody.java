@@ -1,4 +1,4 @@
-package com.xbeer.net.command;
+package com.xbeer.api.dto;
 
 import javax.validation.constraints.NotNull;
 

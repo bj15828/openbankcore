@@ -3,7 +3,7 @@ package com.xbeer.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.xbeer.constants.MessageConstants;
 import com.xbeer.helper.AccountHelper;
@@ -19,7 +19,7 @@ import com.xbeer.repository.mybatis.AccountInfo;
 import com.xbeer.repository.mybatis.AccountRid;
 import com.xbeer.util.ObjectUtil;
 
-@Component
+@Repository
 
 public class AccountRepository {
   private final Logger logger = LoggerFactory.getLogger(AccountRepository.class);

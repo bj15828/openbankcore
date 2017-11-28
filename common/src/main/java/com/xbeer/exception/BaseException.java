@@ -18,9 +18,9 @@ public class BaseException extends Exception {
 
   }
 
-  public void setReq(BaseRequestCommand cmd) {
+  public BaseException setReq(BaseRequestCommand cmd) {
     this.t = cmd;
-
+    return this;
   }
 
   public BaseRequestCommand getReq() {

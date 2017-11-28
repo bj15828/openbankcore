@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
+import com.xbeer.event.BaseEvent;
 import com.xbeer.service.AccumulateBalanceEventHandler;
 
 /**
@@ -40,7 +42,7 @@ public class InterestNotifyReceiver implements INotifyReceiver {
     //一旦有错误，RabbitMQ会不断重发
     //需要增加错误处理机制
     
-    eventHandler.handler(null);
+    eventHandler.handler(new Gson().fromJson(message, BaseEvent.class));
     
     //更新已记录的事件的状态为：已处理
     

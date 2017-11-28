@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+ 
 import com.xbeer.constants.MessageConstants.MessageCode;
 import com.xbeer.exception.BaseException;
 import com.xbeer.message.Message;
@@ -25,20 +25,20 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(value = BaseException.class)
   @ResponseBody
   
-  public Object baseErrorHandler(HttpServletRequest req, BaseException e) throws Exception {
+  public Object baseErrorHandler(HttpServletRequest req, BaseException e1) throws Exception {
 
 
     CommandResponse cmdRet = new CommandResponse();
     CommandResponseHeader retHeader = new CommandResponseHeader();
     
-    Message msg =  MessageFactory.newMessage(MessageCode.INERNAL_ERROR,e.getMessage());
+    Message msg =  MessageFactory.newMessage(MessageCode.INERNAL_ERROR,e1.getMessage());
     
-    BeanUtils.copyProperties(e.getReq().getHeader(), retHeader);
+    BeanUtils.copyProperties(e1.getReq().getHeader(), retHeader);
     
     retHeader.setRet_code(msg.getCode());
     retHeader.setRet_msg(msg.getMsg());
     cmdRet.setHeader(retHeader);
-    cmdRet.setBody(e.getReq().getBody());
+    cmdRet.setBody(e1.getReq().getBody());
 
     
     

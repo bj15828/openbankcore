@@ -10,25 +10,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import com.xbeer.notify.INotifyReceiver;
 import com.xbeer.notify.INotifySender;
 import com.xbeer.notify.NotifyConfig;
 import com.xbeer.util.StringUtil;
 
+@Configuration
+public class RabbitMQConfig implements NotifyConfig {
 
-public class RabbitMQConfig implements NotifyConfig{
+  private final Logger logger = LoggerFactory.getLogger(RabbitMQConfig.class);
 
-  private final  Logger logger = LoggerFactory.getLogger(RabbitMQConfig.class);
 
-  
-  
+
   public final static String ExchangeName = "Rabbit_Exchange";
 
   private String[] queues;
@@ -40,28 +42,29 @@ public class RabbitMQConfig implements NotifyConfig{
 
   @Autowired
   private ConnectionFactory connectionFactory;
-  
+
   @Autowired
   private RabbitTemplate template;
-  
+
   RabbitAdmin rabbitAdmin;
-  
+
   List<SimpleMessageListenerContainer> containers = new ArrayList();
-  
-  
+
 
 
   private Map<String, String> binding;
-  
+
 
   public RabbitMQConfig() {
     
-}
+  }
 
   public RabbitMQConfig(String queues, String topics) {
-      this.setQueues(queues);
-      this.setTopics(topics);
+    this.setQueues(queues);
+    this.setTopics(topics);
   }
+
+
 
   public void setQueues(String strQueues) {
 
@@ -81,35 +84,36 @@ public class RabbitMQConfig implements NotifyConfig{
     topics = StringUtil.split(strTopics, ",");
 
   }
-  
- public void setBinding(Map<String, String > binding){
-    
+
+  public void setBinding(Map<String, String> binding) {
+
     this.binding = binding;
-    
+
   }
 
   public void init() {
+    //======================= 设置连接确认模式，支持事务消息发送
+    
+    ((CachingConnectionFactory) this.connectionFactory).setPublisherConfirms(true);
+    rabbitAdmin = new RabbitAdmin(this.connectionFactory);
 
-    
-     rabbitAdmin = new RabbitAdmin(this.connectionFactory); 
-    
     queueMap = new ConcurrentHashMap();
     for (String queueName : queues) {
       Queue q = new Queue(queueName, false);
-      queueMap.put(queueName,q );
+      queueMap.put(queueName, q);
       rabbitAdmin.declareQueue(q);
-        logger.info("create rabbit queue:{}",queueName);
-        
-        
-        
+      logger.info("create rabbit queue:{}", queueName);
+
+
+
     }
-    
-    rabbitAdmin.declareExchange(this.topicExchange);  
-    
-    binding.forEach( (k,v) -> {
-      
+
+    rabbitAdmin.declareExchange(this.topicExchange);
+
+    binding.forEach((k, v) -> {
+
       bindSender(k, v);
-      
+
     });
 
 
@@ -120,52 +124,51 @@ public class RabbitMQConfig implements NotifyConfig{
     Queue q = queueMap.get(queue);
     if (null == q)
       return false;
-    
+
     rabbitAdmin.declareBinding(BindingBuilder.bind(q).to(topicExchange).with(topic));
-    
-    logger.info("bind sender queue:[{}] topic:[{}]",q.getName(),topic);
+
+    logger.info("bind sender queue:[{}] topic:[{}]", q.getName(), topic);
 
 
     return true;
 
   }
-  
-  
-  public boolean bindReciever(String queue,  INotifyReceiver receiver) {
+
+
+  public boolean bindReciever(String queue, INotifyReceiver receiver) {
 
     Queue q = queueMap.get(queue);
     if (null == q)
       return false;
-    
-    
+
+
     MessageListenerAdapter listenerAdapter = new MessageListenerAdapter(receiver, "callback");
 
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
     container.setQueueNames(queue);
     container.setMessageListener(listenerAdapter);
-    logger.info("bind reciever queue:[{}] conn:[{}]",queue,connectionFactory);
-   container.start();
-   containers.add(container);
-  
-    
-   
-    
+    logger.info("bind reciever queue:[{}] conn:[{}]", queue, connectionFactory);
+    container.start();
+    containers.add(container);
+
+
+
     return true;
 
   }
-  
- 
+
+
 
   @Override
   public boolean registerReceiver(INotifyReceiver receiver) {
-    
-    String [] bindQueues = receiver.getBindQueues();
-    
-    for(String queue : bindQueues){
-        this.bindReciever(queue, receiver);
+
+    String[] bindQueues = receiver.getBindQueues();
+
+    for (String queue : bindQueues) {
+      this.bindReciever(queue, receiver);
     }
-    
+
     return true;
   }
 
@@ -180,7 +183,6 @@ public class RabbitMQConfig implements NotifyConfig{
     template.convertAndSend(RabbitMQConfig.ExchangeName, topic, content);
     return false;
   }
-  
 
 
 

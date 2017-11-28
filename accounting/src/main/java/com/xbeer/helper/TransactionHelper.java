@@ -11,9 +11,12 @@ public class TransactionHelper {
     TransactionJournal tranRecord = new TransactionJournal();
     
     tranRecord.setSeqNo(IDGenerator.newTransactionSeq());
+   
     
     
     
-    return null;
+    
+    
+    return tranRecord;
   }
 }
