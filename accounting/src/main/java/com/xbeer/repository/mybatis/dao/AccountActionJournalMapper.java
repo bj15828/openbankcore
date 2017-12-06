@@ -29,7 +29,7 @@ public interface AccountActionJournalMapper {
         "#{createTime,jdbcType=TIMESTAMP}, #{action,jdbcType=INTEGER}, ",
         "#{amount,jdbcType=DOUBLE}, #{beforeBalance,jdbcType=DOUBLE}, ",
         "#{afterBalance,jdbcType=DOUBLE}, #{tranUuid,jdbcType=VARCHAR}, ",
-        "#{tranSeqNo,jdbcType=VARCHAR}, #{urlContext,jdbcType=VARCHAR}, ",
+        "#{tranSeqNo,jdbcType=BIGINT}, #{urlContext,jdbcType=VARCHAR}, ",
         "#{tranCode,jdbcType=VARCHAR}, #{rid,jdbcType=BIGINT})"
     })
     int insert(AccountActionJournal record);
@@ -53,7 +53,7 @@ public interface AccountActionJournalMapper {
         @Result(column="before_balance", property="beforeBalance", jdbcType=JdbcType.DOUBLE),
         @Result(column="after_balance", property="afterBalance", jdbcType=JdbcType.DOUBLE),
         @Result(column="tran_uuid", property="tranUuid", jdbcType=JdbcType.VARCHAR),
-        @Result(column="tran_seq_no", property="tranSeqNo", jdbcType=JdbcType.VARCHAR),
+        @Result(column="tran_seq_no", property="tranSeqNo", jdbcType=JdbcType.BIGINT),
         @Result(column="url_context", property="urlContext", jdbcType=JdbcType.VARCHAR),
         @Result(column="tran_code", property="tranCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="rid", property="rid", jdbcType=JdbcType.BIGINT)
@@ -72,7 +72,7 @@ public interface AccountActionJournalMapper {
           "before_balance = #{beforeBalance,jdbcType=DOUBLE},",
           "after_balance = #{afterBalance,jdbcType=DOUBLE},",
           "tran_uuid = #{tranUuid,jdbcType=VARCHAR},",
-          "tran_seq_no = #{tranSeqNo,jdbcType=VARCHAR},",
+          "tran_seq_no = #{tranSeqNo,jdbcType=BIGINT},",
           "url_context = #{urlContext,jdbcType=VARCHAR},",
           "tran_code = #{tranCode,jdbcType=VARCHAR},",
           "rid = #{rid,jdbcType=BIGINT}",

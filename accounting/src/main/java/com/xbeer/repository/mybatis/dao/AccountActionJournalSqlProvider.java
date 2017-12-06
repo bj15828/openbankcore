@@ -42,7 +42,7 @@ public class AccountActionJournalSqlProvider {
         }
         
         if (record.getTranSeqNo() != null) {
-            sql.VALUES("tran_seq_no", "#{tranSeqNo,jdbcType=VARCHAR}");
+            sql.VALUES("tran_seq_no", "#{tranSeqNo,jdbcType=BIGINT}");
         }
         
         if (record.getUrlContext() != null) {
@@ -93,7 +93,7 @@ public class AccountActionJournalSqlProvider {
         }
         
         if (record.getTranSeqNo() != null) {
-            sql.SET("tran_seq_no = #{tranSeqNo,jdbcType=VARCHAR}");
+            sql.SET("tran_seq_no = #{tranSeqNo,jdbcType=BIGINT}");
         }
         
         if (record.getUrlContext() != null) {

@@ -19,7 +19,7 @@ public class AccountActionJournal {
 
     private String tranUuid;
 
-    private String tranSeqNo;
+    private Long tranSeqNo;
 
     private String urlContext;
 
@@ -91,12 +91,12 @@ public class AccountActionJournal {
         this.tranUuid = tranUuid == null ? null : tranUuid.trim();
     }
 
-    public String getTranSeqNo() {
+    public Long getTranSeqNo() {
         return tranSeqNo;
     }
 
-    public void setTranSeqNo(String tranSeqNo) {
-        this.tranSeqNo = tranSeqNo == null ? null : tranSeqNo.trim();
+    public void setTranSeqNo(Long tranSeqNo) {
+        this.tranSeqNo = tranSeqNo;
     }
 
     public String getUrlContext() {

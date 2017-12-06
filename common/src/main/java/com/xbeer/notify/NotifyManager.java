@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
 
+import com.xbeer.exception.BaseException;
 import com.xbeer.notify.rabbit.RabbitMQConfig;
 import com.xbeer.util.ObjectUtil;
 import com.xbeer.util.StringUtil;
@@ -99,10 +100,11 @@ public class NotifyManager {
     return true;
   }
 
-  public static boolean send(String topic, String content, long msgId) {
+  public static boolean send(String topic, String content, long msgId) throws BaseException {
     if (null == defaultSender) {
       return false;
     }
+    
     defaultSender.send(topic, content, msgId);
     return true;
   }
@@ -118,12 +120,6 @@ public class NotifyManager {
     }
     senders.add(sender);
 
-  }
-
-
-  public static void setCallback1(Predicate<?> cb) {
-    // TODO Auto-generated method stub
-    
   }
 
 

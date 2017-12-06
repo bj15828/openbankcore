@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.xbeer.api.dto.LimitQueryCommand;
+import com.xbeer.command.CommandResponse;
 import com.xbeer.exception.BaseException;
-import com.xbeer.net.CommandResponse;
 
 @Component
 

@@ -5,25 +5,31 @@ import java.util.Date;
 public class TransactionJournal {
     private Long seqNo;
 
-    private String tranId;
+    private String consmrId;
 
-    private String busiId;
+    private String consmrSeqNo;
+
+    private String orgConsmrId;
+
+    private String orgConsmrSeqNo;
+
+    private String tranCode;
+
+    private String txnDt;
+
+    private String txnTime;
 
     private Date createTime;
 
     private Integer tranType;
 
-    private String branch;
-
-    private String tellerId;
-
-    private String busiType;
-
-    private String channelType;
+    private String channelNo;
 
     private String detail;
 
     private String uuid;
+
+    private Integer stats;
 
     public Long getSeqNo() {
         return seqNo;
@@ -33,20 +39,60 @@ public class TransactionJournal {
         this.seqNo = seqNo;
     }
 
-    public String getTranId() {
-        return tranId;
+    public String getConsmrId() {
+        return consmrId;
     }
 
-    public void setTranId(String tranId) {
-        this.tranId = tranId == null ? null : tranId.trim();
+    public void setConsmrId(String consmrId) {
+        this.consmrId = consmrId == null ? null : consmrId.trim();
     }
 
-    public String getBusiId() {
-        return busiId;
+    public String getConsmrSeqNo() {
+        return consmrSeqNo;
     }
 
-    public void setBusiId(String busiId) {
-        this.busiId = busiId == null ? null : busiId.trim();
+    public void setConsmrSeqNo(String consmrSeqNo) {
+        this.consmrSeqNo = consmrSeqNo == null ? null : consmrSeqNo.trim();
+    }
+
+    public String getOrgConsmrId() {
+        return orgConsmrId;
+    }
+
+    public void setOrgConsmrId(String orgConsmrId) {
+        this.orgConsmrId = orgConsmrId == null ? null : orgConsmrId.trim();
+    }
+
+    public String getOrgConsmrSeqNo() {
+        return orgConsmrSeqNo;
+    }
+
+    public void setOrgConsmrSeqNo(String orgConsmrSeqNo) {
+        this.orgConsmrSeqNo = orgConsmrSeqNo == null ? null : orgConsmrSeqNo.trim();
+    }
+
+    public String getTranCode() {
+        return tranCode;
+    }
+
+    public void setTranCode(String tranCode) {
+        this.tranCode = tranCode == null ? null : tranCode.trim();
+    }
+
+    public String getTxnDt() {
+        return txnDt;
+    }
+
+    public void setTxnDt(String txnDt) {
+        this.txnDt = txnDt == null ? null : txnDt.trim();
+    }
+
+    public String getTxnTime() {
+        return txnTime;
+    }
+
+    public void setTxnTime(String txnTime) {
+        this.txnTime = txnTime == null ? null : txnTime.trim();
     }
 
     public Date getCreateTime() {
@@ -65,36 +111,12 @@ public class TransactionJournal {
         this.tranType = tranType;
     }
 
-    public String getBranch() {
-        return branch;
+    public String getChannelNo() {
+        return channelNo;
     }
 
-    public void setBranch(String branch) {
-        this.branch = branch == null ? null : branch.trim();
-    }
-
-    public String getTellerId() {
-        return tellerId;
-    }
-
-    public void setTellerId(String tellerId) {
-        this.tellerId = tellerId == null ? null : tellerId.trim();
-    }
-
-    public String getBusiType() {
-        return busiType;
-    }
-
-    public void setBusiType(String busiType) {
-        this.busiType = busiType == null ? null : busiType.trim();
-    }
-
-    public String getChannelType() {
-        return channelType;
-    }
-
-    public void setChannelType(String channelType) {
-        this.channelType = channelType == null ? null : channelType.trim();
+    public void setChannelNo(String channelNo) {
+        this.channelNo = channelNo == null ? null : channelNo.trim();
     }
 
     public String getDetail() {
@@ -111,5 +133,13 @@ public class TransactionJournal {
 
     public void setUuid(String uuid) {
         this.uuid = uuid == null ? null : uuid.trim();
+    }
+
+    public Integer getStats() {
+        return stats;
+    }
+
+    public void setStats(Integer stats) {
+        this.stats = stats;
     }
 }

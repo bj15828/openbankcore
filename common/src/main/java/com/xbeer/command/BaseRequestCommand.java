@@ -1,9 +1,11 @@
-package com.xbeer.net;
+package com.xbeer.command;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
+
+import com.xbeer.util.JsonUtil;
 
 public abstract class BaseRequestCommand {
 
@@ -65,6 +67,10 @@ public abstract class BaseRequestCommand {
   
   public abstract  CommandRequestBody getBody();
   
+  public   String toJSON(){
+    
+    return JsonUtil.object2Json(this);
+  }
 
 
 

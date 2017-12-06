@@ -1,14 +1,15 @@
 package com.xbeer.notify.rabbit;
 
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.xbeer.exception.BaseException;
 import com.xbeer.notify.INotifySender;
 import com.xbeer.notify.NotifyManager;
 import com.xbeer.util.StringUtil;
@@ -39,12 +40,15 @@ public class RabbitMQSender implements INotifySender, RabbitTemplate.ConfirmCall
 
 
   @Override
-  public boolean send(String topic, String content, long id) {
+  public boolean send(String topic, String content, long id) throws BaseException {
 
     logger.info("topic :[{}],content:[{}]", topic, content);
     CorrelationData correlationId = new CorrelationData(id + "");
+    try{
     rabbitTemplate.convertAndSend(RabbitMQConfig.ExchangeName, topic, content, correlationId);
-
+    }catch(AmqpException e){
+      throw new BaseException(e);
+    }
 
 
     return true;

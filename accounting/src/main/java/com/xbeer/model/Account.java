@@ -136,7 +136,7 @@ public class Account {
     tmpJournal.setRid(this.rid.getRid());
     tmpJournal.setSeqNo(IDGenerator.newActionId());
     tmpJournal.setTranCode(e.getTranCode());
-    tmpJournal.setTranSeqNo(e.getTranSeqNo() + "");
+    tmpJournal.setTranSeqNo(e.getTranSeqNo());
     tmpJournal.setTranUuid(e.getUuid());
     tmpJournal.setUrlContext(e.getUrlContext());
 

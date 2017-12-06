@@ -1,6 +1,6 @@
 package com.xbeer.api.dto;
 
-import com.xbeer.net.CommandRequestBody;
+import com.xbeer.command.CommandRequestBody;
 
 public class TransferReturnBody extends CommandRequestBody{
       

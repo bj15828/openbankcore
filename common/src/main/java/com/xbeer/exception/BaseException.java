@@ -1,12 +1,20 @@
 package com.xbeer.exception;
 
-import com.xbeer.net.BaseRequestCommand;
+import com.xbeer.command.BaseRequestCommand;
 
 public class BaseException extends Exception {
 
   BaseRequestCommand t;
 
+  
+  
   public BaseException(Exception e) {
+
+    
+
+  }
+
+  public BaseException(String e) {
 
 
 

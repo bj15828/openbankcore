@@ -3,8 +3,8 @@ package com.xbeer.api.dto;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.xbeer.command.BaseRequestCommand;
 import com.xbeer.constants.MessageConstants;
-import com.xbeer.net.BaseRequestCommand;
 
 public class LimitQueryCommand extends BaseRequestCommand {
 
@@ -24,6 +24,9 @@ public class LimitQueryCommand extends BaseRequestCommand {
   public void setBody(LimitQueryBody body) {
     this.body = body;
   }
+
+
+  
 
   
   

@@ -19,18 +19,20 @@ public interface TransactionJournalMapper {
     int deleteByPrimaryKey(Long seqNo);
 
     @Insert({
-        "insert into t_transaction_journal (seq_no, tran_id, ",
-        "busi_id, create_time, ",
-        "tran_type, branch, ",
-        "teller_id, busi_type, ",
-        "channel_type, detail, ",
-        "uuid)",
-        "values (#{seqNo,jdbcType=BIGINT}, #{tranId,jdbcType=VARCHAR}, ",
-        "#{busiId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, ",
-        "#{tranType,jdbcType=INTEGER}, #{branch,jdbcType=VARCHAR}, ",
-        "#{tellerId,jdbcType=VARCHAR}, #{busiType,jdbcType=VARCHAR}, ",
-        "#{channelType,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, ",
-        "#{uuid,jdbcType=VARCHAR})"
+        "insert into t_transaction_journal (seq_no, consmr_id, ",
+        "consmr_seq_no, org_consmr_id, ",
+        "org_consmr_seq_no, tran_code, ",
+        "txn_dt, txn_time, ",
+        "create_time, tran_type, ",
+        "channel_no, detail, ",
+        "uuid, stats)",
+        "values (#{seqNo,jdbcType=BIGINT}, #{consmrId,jdbcType=VARCHAR}, ",
+        "#{consmrSeqNo,jdbcType=VARCHAR}, #{orgConsmrId,jdbcType=VARCHAR}, ",
+        "#{orgConsmrSeqNo,jdbcType=VARCHAR}, #{tranCode,jdbcType=VARCHAR}, ",
+        "#{txnDt,jdbcType=VARCHAR}, #{txnTime,jdbcType=VARCHAR}, ",
+        "#{createTime,jdbcType=TIMESTAMP}, #{tranType,jdbcType=INTEGER}, ",
+        "#{channelNo,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, ",
+        "#{uuid,jdbcType=VARCHAR}, #{stats,jdbcType=INTEGER})"
     })
     int insert(TransactionJournal record);
 
@@ -39,23 +41,26 @@ public interface TransactionJournalMapper {
 
     @Select({
         "select",
-        "seq_no, tran_id, busi_id, create_time, tran_type, branch, teller_id, busi_type, ",
-        "channel_type, detail, uuid",
+        "seq_no, consmr_id, consmr_seq_no, org_consmr_id, org_consmr_seq_no, tran_code, ",
+        "txn_dt, txn_time, create_time, tran_type, channel_no, detail, uuid, stats",
         "from t_transaction_journal",
         "where seq_no = #{seqNo,jdbcType=BIGINT}"
     })
     @Results({
         @Result(column="seq_no", property="seqNo", jdbcType=JdbcType.BIGINT, id=true),
-        @Result(column="tran_id", property="tranId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="busi_id", property="busiId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="consmr_id", property="consmrId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="consmr_seq_no", property="consmrSeqNo", jdbcType=JdbcType.VARCHAR),
+        @Result(column="org_consmr_id", property="orgConsmrId", jdbcType=JdbcType.VARCHAR),
+        @Result(column="org_consmr_seq_no", property="orgConsmrSeqNo", jdbcType=JdbcType.VARCHAR),
+        @Result(column="tran_code", property="tranCode", jdbcType=JdbcType.VARCHAR),
+        @Result(column="txn_dt", property="txnDt", jdbcType=JdbcType.VARCHAR),
+        @Result(column="txn_time", property="txnTime", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="tran_type", property="tranType", jdbcType=JdbcType.INTEGER),
-        @Result(column="branch", property="branch", jdbcType=JdbcType.VARCHAR),
-        @Result(column="teller_id", property="tellerId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="busi_type", property="busiType", jdbcType=JdbcType.VARCHAR),
-        @Result(column="channel_type", property="channelType", jdbcType=JdbcType.VARCHAR),
+        @Result(column="channel_no", property="channelNo", jdbcType=JdbcType.VARCHAR),
         @Result(column="detail", property="detail", jdbcType=JdbcType.VARCHAR),
-        @Result(column="uuid", property="uuid", jdbcType=JdbcType.VARCHAR)
+        @Result(column="uuid", property="uuid", jdbcType=JdbcType.VARCHAR),
+        @Result(column="stats", property="stats", jdbcType=JdbcType.INTEGER)
     })
     TransactionJournal selectByPrimaryKey(Long seqNo);
 
@@ -64,16 +69,19 @@ public interface TransactionJournalMapper {
 
     @Update({
         "update t_transaction_journal",
-        "set tran_id = #{tranId,jdbcType=VARCHAR},",
-          "busi_id = #{busiId,jdbcType=VARCHAR},",
+        "set consmr_id = #{consmrId,jdbcType=VARCHAR},",
+          "consmr_seq_no = #{consmrSeqNo,jdbcType=VARCHAR},",
+          "org_consmr_id = #{orgConsmrId,jdbcType=VARCHAR},",
+          "org_consmr_seq_no = #{orgConsmrSeqNo,jdbcType=VARCHAR},",
+          "tran_code = #{tranCode,jdbcType=VARCHAR},",
+          "txn_dt = #{txnDt,jdbcType=VARCHAR},",
+          "txn_time = #{txnTime,jdbcType=VARCHAR},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "tran_type = #{tranType,jdbcType=INTEGER},",
-          "branch = #{branch,jdbcType=VARCHAR},",
-          "teller_id = #{tellerId,jdbcType=VARCHAR},",
-          "busi_type = #{busiType,jdbcType=VARCHAR},",
-          "channel_type = #{channelType,jdbcType=VARCHAR},",
+          "channel_no = #{channelNo,jdbcType=VARCHAR},",
           "detail = #{detail,jdbcType=VARCHAR},",
-          "uuid = #{uuid,jdbcType=VARCHAR}",
+          "uuid = #{uuid,jdbcType=VARCHAR},",
+          "stats = #{stats,jdbcType=INTEGER}",
         "where seq_no = #{seqNo,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(TransactionJournal record);

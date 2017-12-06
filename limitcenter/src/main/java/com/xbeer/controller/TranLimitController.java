@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xbeer.api.ILimitCenterService;
 import com.xbeer.api.dto.LimitQueryCommand;
+import com.xbeer.command.CommandResponse;
 import com.xbeer.constants.MessageConstants;
 import com.xbeer.exception.BaseException;
 import com.xbeer.message.MessageFactory;
-import com.xbeer.net.CommandResponse;
 
 @RestController
 

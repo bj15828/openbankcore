@@ -3,8 +3,8 @@ package com.xbeer.api.dto;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.xbeer.command.BaseRequestCommand;
 import com.xbeer.constants.MessageConstants;
-import com.xbeer.net.BaseRequestCommand;
 
 public class TransferCommand extends BaseRequestCommand {
 
@@ -25,6 +25,8 @@ public class TransferCommand extends BaseRequestCommand {
     this.body = body;
   }
 
+
+ 
   
   
 

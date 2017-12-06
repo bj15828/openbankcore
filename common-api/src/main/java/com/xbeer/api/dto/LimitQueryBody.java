@@ -2,8 +2,8 @@ package com.xbeer.api.dto;
 
 import javax.validation.constraints.NotNull;
 
+import com.xbeer.command.CommandRequestBody;
 import com.xbeer.constants.MessageConstants;
-import com.xbeer.net.CommandRequestBody;
 
 public class LimitQueryBody extends CommandRequestBody {
 

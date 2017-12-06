@@ -4,8 +4,6 @@ public class AccountRid {
     private String acctId;
 
     private Long rid;
-    
-    
 
     public String getAcctId() {
         return acctId;

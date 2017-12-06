@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
- 
+
+import com.xbeer.command.CommandResponse;
+import com.xbeer.command.CommandResponseHeader;
 import com.xbeer.constants.MessageConstants.MessageCode;
 import com.xbeer.exception.BaseException;
 import com.xbeer.message.Message;
 import com.xbeer.message.MessageFactory;
-import com.xbeer.net.CommandResponse;
-import com.xbeer.net.CommandResponseHeader;
 
 @RestController
 @ControllerAdvice

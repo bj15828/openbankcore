@@ -1,4 +1,4 @@
-package com.xbeer.net;
+package com.xbeer.command;
 
 public class CommandResponseHeader extends CommandRequestHeader {
     

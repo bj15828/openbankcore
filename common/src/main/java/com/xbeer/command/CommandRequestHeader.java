@@ -1,4 +1,4 @@
-package com.xbeer.net;
+package com.xbeer.command;
 
 import javax.validation.constraints.NotNull;
 
@@ -6,18 +6,30 @@ import org.hibernate.validator.constraints.Length;
 
 public class CommandRequestHeader {
 
+
+  @NotNull(message="不能为空")
+  @Length(min = 1, max = 20, message = "长度必须为1-20")
     String svr_cd ;//服务代码
     String svr_scn;//服务场景
   
+    @NotNull(message="不能为空")
+    @Length(min = 1, max = 10, message = "长度必须为1-10")
     String consmr_id;//请求系统ID
+    
+
+    @NotNull(message="不能为空")
+    @Length(min = 1, max = 32, message = "长度必须为1-32")
     String consmr_seq_no;//请求系统流水号
     String txn_dt;//交易日期
     String txn_time;//交易时间
     
     String chnl_tp;//渠道编号
     
+    
     String org_consmr_id;//原系统编号
     String org_consmr_seq_no;//原系统流水号
+    
+    
     
     
     @NotNull(message="不能为空")

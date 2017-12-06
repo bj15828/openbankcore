@@ -1,5 +1,7 @@
 package com.xbeer.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,11 @@ import com.xbeer.api.ILimitCenterService;
 import com.xbeer.api.dto.LimitQueryCommand;
 import com.xbeer.api.dto.TransferCommand;
 import com.xbeer.api.dto.TransferReturnBody;
+import com.xbeer.command.CommandResponse;
 import com.xbeer.controller.validate.ControllerValidator;
 import com.xbeer.controller.validate.ValidateResult;
 import com.xbeer.exception.BaseException;
 import com.xbeer.message.Message;
-import com.xbeer.net.CommandResponse;
 import com.xbeer.service.TransferService;
 import com.xbeer.util.DoubleUtil;
 
@@ -37,6 +39,8 @@ public class TransferController extends BaseController {
   @Autowired
   ILimitCenterService limitService;
 
+ 
+  
   @ResponseBody
   @RequestMapping(value = "/transfer", method = RequestMethod.POST)
 
@@ -47,9 +51,27 @@ public class TransferController extends BaseController {
 
   ) throws BaseException {
    logger.info("recieve:{}",transferStr);
+   
+   TransferCommand transferCmd = new Gson().fromJson(transferStr, TransferCommand.class);
+   transferCmd.setUrlContext(getCurUrlPath());
+   
+   logger.info("url context path : {}" ,getCurUrlPath());
+
+   ValidateResult validResult = ControllerValidator.validate(transferCmd);
+   
+   
+   if ( ! validResult.isHasPassed()) {
+     
     
-    TransferCommand transferCmd = new Gson().fromJson(transferStr, TransferCommand.class);
-    
+     return this.newCommandReturn(transferCmd.getHeader(), validResult.getValidateMessage(),
+         new TransferReturnBody());
+     
+     
+   }
+   
+   
+   
+   
     LimitQueryCommand  queryCmd = new LimitQueryCommand();
     
     queryCmd.setHeader(transferCmd.getHeader());
@@ -69,18 +91,6 @@ public class TransferController extends BaseController {
     
     
 
-    ValidateResult validResult = ControllerValidator.validate(transferCmd);
-    
-    
-    if ( ! validResult.isHasPassed()) {
-      
-     
-      return this.newCommandReturn(transferCmd.getHeader(), validResult.getValidateMessage(),
-          new TransferReturnBody());
-      
-      
-    }
-    
     
 
 
